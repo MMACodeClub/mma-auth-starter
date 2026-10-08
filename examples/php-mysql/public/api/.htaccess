@@ -1,0 +1,2 @@
+# Für Apache/PHP-Setups, die den Authorization-Header sonst nicht weitergeben.
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1

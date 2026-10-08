@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mein Projekt · MMA Auth Starter</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Kein API-Key nötig. Der zentrale Dienst übernimmt den Login. -->
+    <script defer src="https://auth.mmacodeclub.ch/sdk.js"></script>
+    <script type="module" src="script.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="./">MMA<span>CODECLUB</span></a>
+      <a href="https://github.com/MMACodeClub/mma-auth-starter#readme">Anleitung ↗</a>
+    </header>
+    <main>
+      <section class="hero">
+        <p class="eyebrow">DEIN PROJEKT. DEIN CODE.</p>
+        <h1>Ein Login.<br>Dein nächstes Projekt.</h1>
+        <p class="lead">Starte mit HTML, CSS und JavaScript. Dein MMA-Konto bringt den Login schon mit.</p>
+        <div data-mma-show="out">
+          <button type="button" data-mma-login>Anmelden oder registrieren →</button>
+          <p class="hint">Für die erste Registrierung brauchst du den Klassencode deiner Lehrperson.</p>
+        </div>
+      </section>
+
+      <section class="card" data-mma-show="in" hidden aria-labelledby="account-heading">
+        <p class="eyebrow">DU BIST DRIN</p>
+        <h2 id="account-heading">Hallo <span data-mma="name"></span>.</h2>
+        <dl>
+          <div><dt>E-Mail</dt><dd data-mma="email"></dd></div>
+          <div><dt>Klasse</dt><dd data-mma="klasse"></dd></div>
+          <div><dt>User-ID</dt><dd data-mma="id"></dd></div>
+        </dl>
+        <div class="actions">
+          <a href="https://auth.mmacodeclub.ch/konto">Konto &amp; eigene Domains ↗</a>
+          <button class="secondary" type="button" data-mma-logout>Abmelden</button>
+        </div>
+      </section>
+
+      <section class="card" id="notes" hidden aria-labelledby="note-heading">
+        <p class="eyebrow">DEIN ERSTER BAUSTEIN</p>
+        <h2 id="note-heading">Meine Projektnotiz</h2>
+        <p>Dieses Beispiel speichert deine Notiz nur in diesem Browser. Für gemeinsame oder vertrauliche Daten findest du Backend-Beispiele im Repository.</p>
+        <form id="note-form">
+          <label for="note">Woran arbeitest du?</label>
+          <textarea id="note" name="note" rows="5" maxlength="2000" placeholder="Meine nächste Idee …"></textarea>
+          <div class="actions">
+            <button type="submit">Notiz speichern</button>
+            <button class="secondary" type="button" id="delete-note">Notiz löschen</button>
+          </div>
+        </form>
+      </section>
+      <p id="status" role="status" aria-live="polite">Login wird vorbereitet …</p>
+      <noscript>Bitte aktiviere JavaScript, um den Login zu verwenden.</noscript>
+    </main>
+    <footer>Eine Vorlage zum Verstehen, Umbauen und Weiterentwickeln. <a href="https://auth.mmacodeclub.ch">Zum Login-Dienst ↗</a></footer>
+  </body>
+</html>
