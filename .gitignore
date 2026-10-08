@@ -7,3 +7,4 @@ config.local.php
 .DS_Store
 coverage/
 test-results/
+config.php
