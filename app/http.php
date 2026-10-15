@@ -20,7 +20,7 @@ set_exception_handler(static function (Throwable $error): void {
     error_log(sprintf('MMA API: %s in %s:%d (Code %s)',
         get_class($error), basename($error->getFile()), $error->getLine(), $error->getCode()));
     if ($error instanceof PDOException) {
-        json_error(503, 'Die Projektdatenbank ist gerade nicht verfügbar. Prüfe die Serverkonfiguration.');
+        json_error(500, 'Die Datenbankabfrage ist fehlgeschlagen. Ist die Tabelle importiert und stimmen die Spaltennamen?');
     }
     json_error(500, 'Auf dem Server ist ein Fehler passiert.');
 });

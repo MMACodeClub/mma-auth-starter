@@ -101,14 +101,15 @@ echo json_encode($query->fetchAll(), JSON_UNESCAPED_UNICODE);
 
 Beim Lesen, Ändern und Löschen filterst du immer nach der geprüften `$user['id']`; beim Speichern setzt du sie als `user_id`. Verwende im Frontend `mmaAuth.fetch()` für deine API und `textContent` für Benutzereingaben.
 
-Die Helfer in `app/` sind für **JSON-APIs**, nicht für HTML-Seiten: `http.php` setzt beim Laden die JSON-Header. Unbehandelte Ausnahmen liefern eine JSON-Fehlermeldung (Datenbank: 503, sonst: 500); Fehlertyp und Fundstelle stehen im PHP-Fehlerlog auf dem Server. Dafür brauchst du kein eigenes `try/catch`.
+Die Helfer in `app/` sind für **JSON-APIs**, nicht für HTML-Seiten: `http.php` setzt beim Laden die JSON-Header. Fehler liefern eine JSON-Meldung (Verbindungsfehler: 503; Abfragefehler und sonstige Ausnahmen: 500). Bei unbehandelten Ausnahmen stehen Fehlertyp und Fundstelle im PHP-Fehlerlog auf dem Server. Dafür brauchst du kein eigenes `try/catch`.
 
 ## Wenn etwas nicht klappt
 
 | Problem | Prüfen |
 | --- | --- |
 | Konfiguration fehlt | Liegt `config.php` neben `app/` und `public/` auf Hostpoint? |
-| Datenbank nicht verfügbar | Stimmen die vier Datenbankangaben und ist `schema.sql` importiert? |
+| Keine Verbindung zur Datenbank (503) | Stimmen die vier Datenbankangaben in `config.php`? |
+| Datenbankabfrage fehlgeschlagen (500) | Ist die Tabelle importiert? Stimmen Tabellen- und Spaltennamen in deiner SQL-Abfrage? |
 | Login nicht erlaubt / API liefert 403 | Domain freigeschaltet? Stimmt `app_origin` exakt mit deiner Projektadresse überein? |
 | API liefert 401 | Abmelden und erneut anmelden; API mit `mmaAuth.fetch` aufrufen. Ist `.htaccess` hochgeladen? |
 | Startseite fehlt | Zeigt das Document-Root auf den Ordner `public/`? |
