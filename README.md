@@ -50,10 +50,10 @@ Voraussetzungen: **PHP 8.1+** mit `curl` und `pdo_mysql`, dazu **MySQL 8+ oder M
 3. Kopiere im Projektordner die Konfiguration:
 
    ```sh
-   cp config.example.php config.local.php
+   cp config.example.php config.php
    ```
 
-   Auf Windows kannst du die Datei im Explorer kopieren. Trage in `config.local.php` deine tatsächlichen Datenbankdaten ein. Port und Host hängen von deiner Installation ab:
+   Auf Windows kannst du die Datei im Explorer kopieren. Trage in `config.php` deine tatsächlichen Datenbankdaten ein. Port und Host hängen von deiner Installation ab:
 
    ```php
    return [
@@ -65,7 +65,7 @@ Voraussetzungen: **PHP 8.1+** mit `curl` und `pdo_mysql`, dazu **MySQL 8+ oder M
    ];
    ```
 
-   `config.local.php` wird von Git ignoriert und liegt ausserhalb des öffentlichen Verzeichnisses. Sie hat Vorrang vor Umgebungsvariablen.
+   `config.php` wird von Git ignoriert und liegt ausserhalb des öffentlichen Verzeichnisses. Sie hat Vorrang vor Umgebungsvariablen.
 
 4. Starte im Projektordner:
 
@@ -97,8 +97,9 @@ public/                   Einziger öffentlich erreichbarer Ordner
   api/.htaccess           Authorization-Header für Apache weitergeben
 app/
   auth.php                Bearer-Token und Projekt-Origin prüfen
-  config.php              Lokale Datei oder Umgebungsvariablen laden
+  load-config.php         Lokale Datei oder Umgebungsvariablen laden
 config.example.php        Vorlage für deine Zugangsdaten
+config.php                Deine Zugangsdaten (lokal anlegen, von Git ignoriert)
 schema.sql                Tabellen für deine Projektdatenbank
 compose.yaml              Lokaler PHP-/MySQL-Start mit Docker
 Dockerfile                PHP mit Apache und PDO MySQL
@@ -122,7 +123,7 @@ declare(strict_types=1);
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 require __DIR__ . '/../../app/auth.php';
-$config = require __DIR__ . '/../../app/config.php';
+$config = require __DIR__ . '/../../app/load-config.php';
 $user = mma_require_user($config);
 
 // Erst jetzt Projektdaten für $user['id'] laden oder verändern.
@@ -172,7 +173,7 @@ Für eine Seite mit verpflichtendem Login kannst du `<script src="https://auth.m
 
 1. PHP mit cURL und PDO MySQL sowie eine eigene MySQL-/MariaDB-Datenbank bereitstellen.
 2. `schema.sql` in die Projektdatenbank importieren.
-3. Dateien hochladen und `config.local.php` mit den echten Zugangsdaten anlegen.
+3. Dateien hochladen und `config.php` mit den echten Zugangsdaten anlegen.
 4. **Document Root auf `public/` setzen.** `app/`, Konfiguration und SQL-Datei bleiben ausserhalb des Webroots.
 5. `app_origin` exakt auf deine HTTPS-Origin setzen, z.B. `https://mein-projekt.example`, ohne Pfad oder abschliessenden Schrägstrich. `auth_url` bleibt `https://auth.mmacodeclub.ch`.
 6. Deine Domain unter [Mein Konto](https://auth.mmacodeclub.ch/konto#domains) freischalten; Sonderfälle mit der Lehrperson klären.
@@ -189,7 +190,7 @@ Apache reicht mit `public/api/.htaccess` den Authorization-Header weiter. Bei Ng
 | Problem | Prüfen / lösen |
 | --- | --- |
 | Port 8000 belegt | Anderen Port wählen und `app_origin` passend ändern; bei Docker auch die Portzuordnung |
-| Konfiguration fehlt (503) | `config.local.php` anlegen oder Docker Compose verwenden |
+| Konfiguration fehlt (503) | `config.php` anlegen oder Docker Compose verwenden |
 | Datenbank nicht verfügbar (503) | Zugangsdaten, Host, Port und importiertes Schema prüfen |
 | API liefert HTML statt JSON | PHP-Server und richtigen API-Pfad verwenden; kein Live Server |
 | API liefert 401 | `mmaAuth.fetch` verwenden; abmelden und erneut anmelden |

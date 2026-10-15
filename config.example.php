@@ -1,5 +1,5 @@
 <?php
-// Nach config.local.php kopieren und deine Projektdatenbank eintragen.
+// Nach config.php kopieren und deine Projektdatenbank eintragen.
 return [
     'auth_url' => 'https://auth.mmacodeclub.ch',
     // Exakte Adresse im Browser: Schema, Host und Port, ohne Pfad.

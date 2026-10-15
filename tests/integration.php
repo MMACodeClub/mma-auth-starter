@@ -68,7 +68,7 @@ try {
     mkdir($temp . '/public');
     mkdir($temp . '/public/api');
     mkdir($temp . '/app');
-    foreach (['public/api/notes.php', 'app/auth.php', 'app/config.php'] as $file) copy($root . '/' . $file, $temp . '/' . $file);
+    foreach (['public/api/notes.php', 'app/auth.php', 'app/load-config.php'] as $file) copy($root . '/' . $file, $temp . '/' . $file);
     $config = [
         'auth_url' => 'http://127.0.0.1:18102',
         'app_origin' => 'http://localhost:8000',
@@ -76,7 +76,7 @@ try {
         'db_user' => 'root',
         'db_password' => 'lokal-demo-root-passwort',
     ];
-    file_put_contents($temp . '/config.local.php', '<?php return ' . var_export($config, true) . ';');
+    file_put_contents($temp . '/config.php', '<?php return ' . var_export($config, true) . ';');
     file_put_contents($temp . '/auth-router.php', <<<'PHP'
 <?php
 header('Content-Type: application/json');
@@ -127,7 +127,7 @@ PHP);
     for ($i = 0; $i < 105; $i++) $insert->execute(['u_test_a', 'Test ' . $i]);
     $notes = request()[1];
     check('Neueste 100 Notizen in absteigender Reihenfolge', count($notes) === 100 && $notes[0]['text'] === 'Test 104' && $notes[99]['text'] === 'Test 5');
-    check('Konfiguration liegt ausserhalb des Webroots', request(path: '/config.local.php')[0] === 404);
+    check('Konfiguration liegt ausserhalb des Webroots', request(path: '/config.php')[0] === 404);
     $pdo->exec("DROP DATABASE `$database`");
     [$status, $data] = request();
     check('Datenbankfehler ohne interne Details: 503', $status === 503 && !str_contains(json_encode($data), 'SQLSTATE'));

@@ -10,7 +10,7 @@ if (!in_array($method, ['GET', 'POST', 'DELETE'], true)) {
     header('Allow: GET, POST, DELETE');
     json_error(405, 'Methode nicht unterstützt.');
 }
-$config = require __DIR__ . '/../../app/config.php';
+$config = require __DIR__ . '/../../app/load-config.php';
 $user = mma_require_user($config);
 
 if ($method !== 'GET') {
