@@ -36,3 +36,8 @@ li { overflow-wrap: anywhere; padding-block: .35rem; }
 footer { border-top: 1px solid var(--line); padding-block: 1.5rem 3rem; margin-top: 2rem; font-size: .85rem; }
 footer a { display: inline-block; }
 @media (max-width: 480px) { .site-header, main, footer { width: calc(100% - 2rem); } .site-header { font-size: .85rem; } .hero { padding-top: 2.5rem; } dl div { grid-template-columns: 1fr; gap: 0; } }
+
+#list { list-style: none; padding: 0; }
+#list li { display: flex; align-items: start; gap: 1rem; justify-content: space-between; border-top: 1px solid var(--line); padding-block: 1rem; }
+#list p { margin: 0; white-space: pre-wrap; min-width: 0; }
+#list button { flex-shrink: 0; padding: .4rem .7rem; }

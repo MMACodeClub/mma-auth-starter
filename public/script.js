@@ -1,5 +1,5 @@
 // Nur mmaAuth.fetch ergänzt den Bearer-Token. fetch allein tut das nicht.
-const endpoint = 'api/notes';
+const endpoint = 'api/notes.php';
 const status = document.querySelector('#status');
 const form = document.querySelector('#note-form');
 const list = document.querySelector('#list');
@@ -25,12 +25,33 @@ async function request(options) {
 function render(notes) {
   list.replaceChildren(...notes.map((note) => {
     const item = document.createElement('li');
-    item.textContent = note.text; // Keine HTML-Ausführung bei Benutzereingaben.
+    const text = document.createElement('p');
+    text.textContent = note.text; // Benutzereingaben immer als Text einsetzen.
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'secondary';
+    button.textContent = 'Löschen';
+    button.setAttribute('aria-label', `Notiz löschen: ${note.text.slice(0, 60)}`);
+    button.addEventListener('click', async () => {
+      button.disabled = true;
+      try {
+        render(await request({
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: Number(note.id) }),
+        }));
+      } catch (error) {
+        showError(error);
+      } finally {
+        button.disabled = false;
+      }
+    });
+    item.append(text, button);
     return item;
   }));
   document.querySelector('#empty').hidden = notes.length !== 0;
   status.dataset.error = 'false';
-  status.textContent = `${notes.length} Notizen geladen.`;
+  status.textContent = notes.length === 1 ? '1 Notiz geladen.' : `${notes.length} Notizen geladen.`;
 }
 
 form.addEventListener('submit', async (event) => {
