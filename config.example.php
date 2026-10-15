@@ -1,10 +1,11 @@
 <?php
-// Nach config.php kopieren und deine Projektdatenbank eintragen.
+// Kopiere diese Vorlage nach config.php. config.php bleibt aus Git ausgeschlossen.
 return [
-    'auth_url' => 'https://auth.mmacodeclub.ch',
-    // Exakte Adresse im Browser: Schema, Host und Port, ohne Pfad.
-    'app_origin' => 'http://localhost:8000',
-    'db_dsn' => 'mysql:host=127.0.0.1;port=3306;dbname=mma_projekt;charset=utf8mb4',
-    'db_user' => 'mma_projekt',
-    'db_password' => '',
+    'auth_url' => 'https://auth.mmacodeclub.ch', // Unverändert lassen.
+    'app_origin' => 'https://dein-projekt.ch', // Deine Projektadresse, ohne Pfad oder / am Ende.
+    // Diese vier Angaben findest du bei deiner Datenbank im Hostpoint Control Panel.
+    'db_host' => 'DEIN_DATENBANKHOST',
+    'db_name' => 'DEIN_DATENBANKNAME',
+    'db_user' => 'DEIN_DATENBANKBENUTZER',
+    'db_password' => 'DEIN_DATENBANKPASSWORT',
 ];
