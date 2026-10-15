@@ -43,6 +43,8 @@ Die Struktur auf Hostpoint sieht danach so aus:
 www/dein-projekt/
 ├── app/
 │   ├── auth.php
+│   ├── db.php
+│   ├── http.php
 │   └── load-config.php
 ├── config.php
 └── public/             ← Document-Root deiner Website
@@ -74,7 +76,34 @@ Jede Person sieht nur ihre eigenen neuesten 100 Notizen. Sie bleiben in deiner H
 - **`public/script.js`**: Funktionen im Browser. `mmaAuth.fetch('api/notes.php')` sendet den Login an PHP.
 - **`public/api/notes.php`**: Notizen laden, speichern und löschen. Vorlage für deine eigenen API-Endpunkte.
 
-Jeder geschützte PHP-Endpunkt muss zuerst `app/auth.php` und `app/load-config.php` laden und `mma_require_user($config)` aufrufen. Verwende danach die geprüfte `$user['id']` für deine Datenbankabfragen. Die Prüfung kontrolliert auch, ob das Token zu deinem Projekt gehört. Benutzereingaben im Browser mit `textContent` anzeigen.
+Für deine Projektidee ergänzt du eine Tabelle in `schema.sql` mit `user_id VARCHAR(32)` und einem Fremdschlüssel auf `users(id)`. Importiere die neue Tabelle auch in deine Hostpoint-Datenbank; eine Änderung an der Datei allein ändert die Datenbank nicht.
+
+Nimm `public/api/notes.php` als Vorlage für deinen Endpunkt:
+
+- `mma_require_user($config)` prüft den Login und ob das Token zu deinem Projekt gehört.
+- `mma_db($config, $user)` verbindet die Datenbank und übernimmt die geprüfte Person in `users`.
+- `read_json()` liest den JSON-Body. Welche Felder erlaubt sind, prüfst du im Endpunkt.
+
+Ein kleiner Lese-Endpunkt für die bestehenden Notizen sieht so aus:
+
+```php
+<?php
+require_once __DIR__ . '/../../app/auth.php';
+require_once __DIR__ . '/../../app/db.php';
+$config = require __DIR__ . '/../../app/load-config.php';
+$user = mma_require_user($config);
+
+try {
+    $pdo = mma_db($config, $user);
+    $query = $pdo->prepare('SELECT id, text FROM notes WHERE user_id = ? ORDER BY id DESC LIMIT 100');
+    $query->execute([$user['id']]);
+    echo json_encode($query->fetchAll(), JSON_UNESCAPED_UNICODE);
+} catch (PDOException $error) {
+    json_error(503, 'Die Projektdatenbank ist gerade nicht verfügbar.');
+}
+```
+
+Beim Lesen, Ändern und Löschen filterst du immer nach der geprüften `$user['id']`; beim Speichern setzt du sie als `user_id`. Verwende im Frontend `mmaAuth.fetch()` für deine API und `textContent` für Benutzereingaben.
 
 ## Wenn etwas nicht klappt
 

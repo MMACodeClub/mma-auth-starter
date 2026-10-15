@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/http.php';
 
 $path = __DIR__ . '/../config.php';
 if (!is_file($path)) {

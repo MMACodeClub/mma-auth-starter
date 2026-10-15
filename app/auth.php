@@ -1,12 +1,7 @@
 <?php
 declare(strict_types=1);
 
-function json_error(int $status, string $message): never
-{
-    http_response_code($status);
-    echo json_encode(['error' => $message], JSON_UNESCAPED_UNICODE);
-    exit;
-}
+require_once __DIR__ . '/http.php';
 
 function mma_require_user(array $config): array
 {
