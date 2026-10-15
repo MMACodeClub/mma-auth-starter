@@ -46,4 +46,4 @@ footer a { display: inline-block; }
 .mascot img { flex: 0 0 auto; width: clamp(5rem, 12vw, 7rem); height: auto; }
 .mascot > div { min-width: 0; }
 .mascot p { margin: 0 0 .25rem; }
-.mascot a { font-size: .85rem; }
+.mascot__description { font-size: .85rem; }
