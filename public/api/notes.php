@@ -22,22 +22,17 @@ if ($method !== 'GET') {
     }
 }
 
-try {
-    $pdo = mma_db($config, $user);
-    if ($method === 'POST') {
-        // Die User-ID kommt ausschliesslich aus der geprüften Auth-Antwort.
-        $pdo->prepare('INSERT INTO notes (user_id, text) VALUES (?, ?)')->execute([$user['id'], $text]);
-        http_response_code(201);
-    }
-    if ($method === 'DELETE') {
-        $delete = $pdo->prepare('DELETE FROM notes WHERE id = ? AND user_id = ?');
-        $delete->execute([$input['id'], $user['id']]);
-        if ($delete->rowCount() === 0) json_error(404, 'Diese Notiz wurde nicht gefunden.');
-    }
-    $query = $pdo->prepare('SELECT id, text, created_at FROM notes WHERE user_id = ? ORDER BY id DESC LIMIT 100');
-    $query->execute([$user['id']]);
-    echo json_encode($query->fetchAll(), JSON_UNESCAPED_UNICODE);
-} catch (PDOException $error) {
-    // Keine Zugangsdaten, SQL-Abfragen oder internen Pfade an den Browser geben.
-    json_error(503, 'Die Projektdatenbank ist gerade nicht verfügbar. Prüfe die Serverkonfiguration.');
+$pdo = mma_db($config, $user);
+if ($method === 'POST') {
+    // Die User-ID kommt ausschliesslich aus der geprüften Auth-Antwort.
+    $pdo->prepare('INSERT INTO notes (user_id, text) VALUES (?, ?)')->execute([$user['id'], $text]);
+    http_response_code(201);
 }
+if ($method === 'DELETE') {
+    $delete = $pdo->prepare('DELETE FROM notes WHERE id = ? AND user_id = ?');
+    $delete->execute([$input['id'], $user['id']]);
+    if ($delete->rowCount() === 0) json_error(404, 'Diese Notiz wurde nicht gefunden.');
+}
+$query = $pdo->prepare('SELECT id, text, created_at FROM notes WHERE user_id = ? ORDER BY id DESC LIMIT 100');
+$query->execute([$user['id']]);
+echo json_encode($query->fetchAll(), JSON_UNESCAPED_UNICODE);

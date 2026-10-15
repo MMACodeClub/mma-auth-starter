@@ -82,7 +82,7 @@ Nimm `public/api/notes.php` als Vorlage für deinen Endpunkt:
 
 - `mma_require_user($config)` prüft den Login und ob das Token zu deinem Projekt gehört.
 - `mma_db($config, $user)` verbindet die Datenbank und übernimmt die geprüfte Person in `users`.
-- `read_json()` liest den JSON-Body. Welche Felder erlaubt sind, prüfst du im Endpunkt.
+- `read_json()` liest ein JSON-Objekt als Array, auch verschachtelte Objekte. Welche Felder erlaubt sind, prüfst du im Endpunkt.
 
 Ein kleiner Lese-Endpunkt für die bestehenden Notizen sieht so aus:
 
@@ -93,17 +93,15 @@ require_once __DIR__ . '/../../app/db.php';
 $config = require __DIR__ . '/../../app/load-config.php';
 $user = mma_require_user($config);
 
-try {
-    $pdo = mma_db($config, $user);
-    $query = $pdo->prepare('SELECT id, text FROM notes WHERE user_id = ? ORDER BY id DESC LIMIT 100');
-    $query->execute([$user['id']]);
-    echo json_encode($query->fetchAll(), JSON_UNESCAPED_UNICODE);
-} catch (PDOException $error) {
-    json_error(503, 'Die Projektdatenbank ist gerade nicht verfügbar.');
-}
+$pdo = mma_db($config, $user);
+$query = $pdo->prepare('SELECT id, text FROM notes WHERE user_id = ? ORDER BY id DESC LIMIT 100');
+$query->execute([$user['id']]);
+echo json_encode($query->fetchAll(), JSON_UNESCAPED_UNICODE);
 ```
 
 Beim Lesen, Ändern und Löschen filterst du immer nach der geprüften `$user['id']`; beim Speichern setzt du sie als `user_id`. Verwende im Frontend `mmaAuth.fetch()` für deine API und `textContent` für Benutzereingaben.
+
+Die Helfer in `app/` sind für **JSON-APIs**, nicht für HTML-Seiten: `http.php` setzt beim Laden die JSON-Header. Unbehandelte Ausnahmen liefern eine JSON-Fehlermeldung (Datenbank: 503, sonst: 500); Fehlertyp und Fundstelle stehen im PHP-Fehlerlog auf dem Server. Dafür brauchst du kein eigenes `try/catch`.
 
 ## Wenn etwas nicht klappt
 
