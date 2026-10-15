@@ -63,9 +63,9 @@ Hostpoint-Hilfe: [Document-Root](https://support.hostpoint.ch/de/produkte/webhos
 
 ## 5. Login und Notizen ausprobieren
 
-1. Trage deine Projektdomain unter [Mein Konto → Domains](https://auth.mmacodeclub.ch/konto#domains) ein. Falls nötig, hilft deine Lehrperson.
-2. Öffne deine HTTPS-Projektadresse und klicke auf **Anmelden oder registrieren**. Für ein neues Konto brauchst du den Klassencode deiner Lehrperson und den Bestätigungscode aus der E-Mail.
-3. Erlaube deinem Projekt den Zugriff auf deine Kontodaten. Speichere eine Notiz, lade die Seite neu und lösche sie wieder.
+1. Neu dabei? [Erstelle dein MMA-Konto](https://auth.mmacodeclub.ch/registrieren) mit dem Klassencode deiner Lehrperson und trage im Feld **Domain deines Projekts** deine Projektdomain ein. Bestätige den Code aus der E-Mail. Hast du schon ein Konto, ergänze die Domain unter [Mein Konto → Domains](https://auth.mmacodeclub.ch/konto#domains). Für Adressen auf `*.mmacodeclub.ch` musst du nichts eintragen.
+2. Öffne deine HTTPS-Projektadresse, melde dich an und erlaube deinem Projekt den Zugriff auf deine Kontodaten.
+3. Speichere eine Notiz, lade die Seite neu und lösche sie wieder.
 
 Jede Person sieht nur ihre eigenen neuesten 100 Notizen. Sie bleiben in deiner Hostpoint-Datenbank gespeichert, auch nach dem Abmelden.
 
@@ -112,6 +112,7 @@ Die Helfer in `app/` sind für **JSON-APIs**, nicht für HTML-Seiten: `http.php`
 | Datenbankabfrage fehlgeschlagen (500) | Ist die Tabelle importiert? Stimmen Tabellen- und Spaltennamen in deiner SQL-Abfrage? |
 | Login nicht erlaubt / API liefert 403 | Domain freigeschaltet? Stimmt `app_origin` exakt mit deiner Projektadresse überein? |
 | API liefert 401 | Abmelden und erneut anmelden; API mit `mmaAuth.fetch` aufrufen. Ist `.htaccess` hochgeladen? |
+| «Das Backend liefert keine gültige Notizliste» | Läuft die Seite lokal, z.B. mit Live Server? PHP und Datenbank dieses Starters laufen bei Hostpoint. Teste auf deiner HTTPS-Projektadresse. |
 | Startseite fehlt | Zeigt das Document-Root auf den Ordner `public/`? |
 
 [MIT-Lizenz](LICENSE)
