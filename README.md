@@ -1,6 +1,6 @@
 # MMA Auth Starter
 
-Dein Projekt mit **HTML, CSS, JavaScript, PHP und einer Hostpoint-Datenbank**. Der [MMA-Login](https://auth.mmacodeclub.ch) ist eingebaut. Als Beispiel kannst du eigene Notizen speichern und löschen.
+Dein Projekt mit **HTML, CSS, JavaScript, PHP und einer Hostpoint-Datenbank**. Der [MMA-Login](https://auth.mmacodeclub.ch) ist eingebaut. Als Beispiel kannst du eigene Notizen speichern und löschen. Beni, das [MMACodeClub-Maskottchen](https://mini.witzelfitz.io/), begrüsst dich auf der Startseite.
 
 ## 1. Eigenes Repository erstellen
 
@@ -47,6 +47,7 @@ www/dein-projekt/
 ├── config.php
 └── public/             ← Document-Root deiner Website
     ├── index.html
+    ├── beni.png        ← Unser Maskottchen
     ├── style.css
     ├── script.js
     └── api/
