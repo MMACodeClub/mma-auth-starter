@@ -1,0 +1,13 @@
+{
+  "name": "mma-auth-starter-checks",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/browser.test.mjs",
+    "test:integration": "node --test test/integration.test.mjs",
+    "test:headers": "node --test test/headers.test.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1"
+  }
+}

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Mein Projekt · MMA Auth</title>
   <link rel="stylesheet" href="style.css">
-  <script defer src="https://auth.mmacodeclub.ch/sdk.js"></script>
+  <script defer src="https://auth.mmacodeclub.ch/sdk/v1.1.0.js" integrity="sha384-K444h5y9j83+5WiCzJsaO18bhb+nybsIMPnOI6TtZXj+LrFeBU9bID8WdCvYTQgS" crossorigin="anonymous"></script>
   <script type="module" src="script.js"></script>
 </head>
 <body>
@@ -15,7 +15,7 @@
       <p class="eyebrow">DEIN PROJEKTSTART · PHP / MYSQL</p>
       <h1>Meine Notizen.</h1>
       <p class="lead">Das Backend prüft deinen Login und liefert ausschliesslich deine eigenen Notizen.</p>
-      <p>Deine Notizen liegen dauerhaft in deiner eigenen Projektdatenbank. Angezeigt werden die neuesten 100.</p>
+      <p>Bis zu 100 persönliche Notizen liegen in deiner eigenen Projektdatenbank.</p>
       <aside class="mascot" aria-label="Beni, das MMACodeClub-Maskottchen">
         <img src="beni.png" width="112" height="112" alt="" decoding="async">
         <div>
@@ -37,6 +37,7 @@
       <p id="empty" hidden>Noch keine Notizen. Schreib deine erste Idee auf.</p>
     </section>
     <p id="status" role="status" aria-live="polite">Login wird vorbereitet …</p>
+    <button id="reload" class="secondary" type="button" hidden>Seite neu laden und Notizen prüfen</button>
     <noscript>Bitte aktiviere JavaScript.</noscript>
   </main>
   <footer>Vom Login zum eigenen Projekt. <a href="https://github.com/MMACodeClub/mma-auth-starter#readme">Anleitung ↗</a></footer>

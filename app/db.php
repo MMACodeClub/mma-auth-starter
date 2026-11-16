@@ -15,7 +15,9 @@ function mma_db(array $config, array $user): PDO
     } catch (PDOException $error) {
         json_error(503, 'Keine Verbindung zur Datenbank. Prüfe die Angaben in config.php.');
     }
-    $pdo->prepare('INSERT INTO users (id, name, email) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, email = ?')
-        ->execute([$user['id'], $user['name'], $user['email'], $user['name'], $user['email']]);
+    // Für persönliche Notizen reicht die stabile ID. Name und E-Mail bleiben
+    // beim Auth-Service und werden nicht in jede Projektdatenbank kopiert.
+    $pdo->prepare('INSERT INTO users (id) VALUES (?) ON DUPLICATE KEY UPDATE id = id')
+        ->execute([$user['id']]);
     return $pdo;
 }

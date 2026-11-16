@@ -15,6 +15,7 @@ function mma_require_user(array $config): array
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_HTTPHEADER => ['Authorization: ' . $authorization],
         CURLOPT_TIMEOUT => 5,
+        CURLOPT_CONNECTTIMEOUT => 3,
         CURLOPT_FOLLOWLOCATION => false,
     ]);
     $body = curl_exec($curl);
@@ -24,7 +25,7 @@ function mma_require_user(array $config): array
     if ($body === false || $status !== 200) json_error(502, 'Der Login-Service ist gerade nicht erreichbar.');
     $data = json_decode($body, true);
     if (!is_array($data) || !is_array($data['user'] ?? null)
-        || !is_string($data['user']['id'] ?? null) || $data['user']['id'] === ''
+        || !is_string($data['user']['id'] ?? null) || !preg_match('/^u_[abcdefghjkmnpqrstuvwxyz23456789]{16}$/D', $data['user']['id'])
         || !is_string($data['user']['name'] ?? null) || !is_string($data['user']['email'] ?? null)) {
         json_error(502, 'Der Login-Service hat eine ungültige Antwort geliefert.');
     }
