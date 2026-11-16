@@ -24,8 +24,20 @@ if ($method !== 'GET') {
 
 $pdo = mma_db($config, $user);
 if ($method === 'POST') {
+    // Die Sperre auf der User-Zeile serialisiert parallele Schreibanfragen
+    // dieser Person. So können zwei Tabs das Limit nicht gleichzeitig umgehen.
+    $pdo->beginTransaction();
+    $lock = $pdo->prepare('SELECT id FROM users WHERE id = ? FOR UPDATE');
+    $lock->execute([$user['id']]);
+    $count = $pdo->prepare('SELECT COUNT(*) FROM notes WHERE user_id = ?');
+    $count->execute([$user['id']]);
+    if ((int) $count->fetchColumn() >= 100) {
+        $pdo->rollBack();
+        json_error(409, 'Du kannst höchstens 100 Notizen speichern. Lösche zuerst eine Notiz.');
+    }
     // Die User-ID kommt ausschliesslich aus der geprüften Auth-Antwort.
     $pdo->prepare('INSERT INTO notes (user_id, text) VALUES (?, ?)')->execute([$user['id'], $text]);
+    $pdo->commit();
     http_response_code(201);
 }
 if ($method === 'DELETE') {
